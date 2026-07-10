@@ -1,2 +1,11 @@
 # Local secrets -- never commit
 .claude/kln-marketplace-token.txt
+
+# macOS
+.DS_Store
+
+# IntelliJ IDEA
+.idea/
+
+# CodeGraph
+.codegraph/
