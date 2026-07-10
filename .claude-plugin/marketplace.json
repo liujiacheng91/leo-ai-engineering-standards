@@ -1,0 +1,29 @@
+{
+  "name": "ll-ai-standards",
+  "owner": {
+    "name": "LeoLiu"
+  },
+  "metadata": {
+    "description": "LL AI Engineering Standards marketplace -- AI-assisted SDLC workflow, governance, and template standards",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "ll-standards",
+      "source": "./",
+      "description": "AI-assisted SDLC standards with 12 modular skills: full workflow orchestration, scenario analysis, solution design, task breakdown, test design, verification, token reporting, and more",
+      "version": "5.0.0",
+      "author": {
+        "name": "LeoLiu"
+      },
+      "keywords": [
+        "sdlc",
+        "ai-assisted",
+        "standards",
+        "governance",
+        "token-optimization"
+      ],
+      "category": "workflow"
+    }
+  ]
+}

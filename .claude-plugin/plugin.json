@@ -1,0 +1,32 @@
+{
+  "name": "ll-standards",
+  "version": "5.0.0",
+  "description": "LL AI Engineering Standards -- AI-assisted SDLC workflow with modular skills, governance rules, and template-driven document generation",
+  "author": {
+    "name": "LeoLiu"
+  },
+  "license": "MIT",
+  "keywords": [
+    "sdlc",
+    "ai-assisted",
+    "standards",
+    "governance",
+    "token-optimization",
+    "workflow",
+    "templates"
+  ],
+  "skills": [
+    "./skills/ll-dev",
+    "./skills/scenario-analysis",
+    "./skills/risk-assessment",
+    "./skills/solution-design",
+    "./skills/task-breakdown",
+    "./skills/test-design",
+    "./skills/verification",
+    "./skills/token-report",
+    "./skills/pr-summary",
+    "./skills/mapping-rules",
+    "./skills/ll-standards",
+    "./skills/ll-setup"
+  ]
+}

@@ -1,0 +1,193 @@
+﻿source,target,描述,sample,logic
+,/ISA,,ISA*00*          *00*          *ZZ*KERRY          *ZZ*RBTWTMCTEST    *250804*1929*U*00401*002199459*1*T*>~,
+,ISA/ISA01,,,"Hardcode ""00"""
+,ISA/ISA02,,,10个空格
+,ISA/ISA03,,,"Hardcode ""00"""
+,ISA/ISA04,,,10个空格
+,ISA/ISA05,,,"Hardcode ""ZZ"""
+,ISA/ISA06,,,PROD：KERRY，TEST：KERRYTEST
+,ISA/ISA07,,,"Hardcode ""ZZ"""
+,ISA/ISA08,,,PROD：RBTWTMC，TEST：RBTWTMCTEST
+,ISA/ISA09,,,当前日期 (格式为:YYYYMMDD)
+,ISA/ISA10,,,当前时间 (格式为: HHmm)
+,ISA/ISA11,,,"Hard code ""U"""
+,ISA/ISA12,,,"Hard code ""00401"""
+,ISA/ISA13,,,Control Number(9位)
+,ISA/ISA14,,,"Hardcode ""1"""
+,ISA/ISA15,,,PROD：P，TEST：T
+,ISA/ISA16,,,>
+,/GS,,GS*IO*KERRYTEST*RBTWTMCTEST*20260411*0332*17*X*004010,
+,GS/GS01,,,"Hardcode ""IO"""
+,GS/GS02,,,PROD：KERRY，TEST：KERRYTEST
+,GS/GS03,,,PROD：RBTWTMC，TEST：RBTWTMCTEST
+,GS/GS04,,,当前日期 (格式为:YYYYMMDD)
+,GS/GS05,,,当前时间 (格式为: HHmm)
+,GS/GS06,,,Control Number(9位)
+,GS/GS07,,,"Hardcode ""X"""
+,GS/GS08,,,"Hardcode ""00401"""
+,/ST,,ST*310*0001,
+,ST/ST01,,,"Hardcode ""310"""
+,ST/ST02,,,Hardcode 0001
+,/B3,,B3**INV100001*OOCL12345678*PP**20260411*115200**20260325*011*KLNL*20260411*DD*DAP,
+oc_rate.invoice_no,B3/B302,,INV100001,分组1 oc_rate后: min(oc_rate.invoice_no)
+ocean.booking_no,B3/B303,,OOCL12345678,ocean.booking_no
+ocean.terms,B3/B304,,PP,"if ocean.terms = ""COLLECT"" then ""PP"""
+,,,,"if ocean.terms = ""PREPAID"" then ""CC"""
+oc_rate.invoice_date,B3/B306,,20260411,分组1 oc_rate后: min(oc_rate.invoice_date) (yyyy-MM-dd格式) (转换为yyyyMMdd)
+"oc_rate.amount,oc_rate.vat_amount,oc_rate.client_id, oc_rate.invoice_no",B3/B307,Total amount,115200,"分组1 oc_rate后:  sum(oc_rate.amount + oc_rate.vat_amount) group by oc_rate.client_id, oc_rate.invoice_no"
+ocean_milestone,B3/B309,,20260325,优先级如下(如为空按优先级取值)
+,,,,1. ocean_milestone[code=IFFDEP].act_date (yyyy-MM-dd格式)转换为 yyyyMMdd格式
+,,,,2. ocean_milestone[code=IFFDEP].est_date (yyyy-MM-dd格式)转换为 yyyyMMdd格式
+,B3/B310,,011 Shipped,Hard Code : 011
+,,,035 Delivered,
+,B3/B311,Standard Carrier Alpha Code,,Hard Code : KLNL
+ocean.sales_terms,B3/B314,,,ocean.sales_terms
+,/B2A,,B2A*00,
+,B2A/B2A01,,,"Hard Code: ""00"""
+"除了N9*(BM,MB,BN,CN,FN)按照下面的Mapping实现, 最后保留一个占位处理.",/N9,,N9*BM*SXMN0000893,"Other than the below N9 fields (BM,MB,BN,CN,FN) , send back all N9 information from 304, N9* 保留转换占位处理"
+,/N9/N901,,BM,"Hard Code : ""BM"""
+ocean.h_bol,/N9/N902,,SXMN0000893,ocean.h_bol
+,/N9,,N9*MB*OOCL12345678,
+,/N9/N901,,MB,"Hard Code : ""MB"""
+ocean.m_bol,/N9/N902,,OOCL12345678,ocean.m_bol
+,/N9,,N9*MB*OOCL12345678,
+,/N9/N901,,BN,"Hard Code : ""BN"""
+ocean.m_bol,/N9/N902,,OOCL12345678,ocean.m_bol
+,/N9,,N9*CN*OOCL12345678,
+,/N9/N901,,CN,"Hard Code : ""CN"""
+ocean.m_bol,/N9/N902,,OOCL12345678,ocean.m_bol
+,/N9,,N9*FN*SXMN0000893,
+,/N9/N901,,FN,"Hard Code : ""FN"""
+ocean.h_bol,/N9/N902,,SXMN0000893,ocean.h_bol
+,/C3,,,
+oc_rate.print_currency,C3/C301,,,oc_rate.print_currency
+,/N1,,N1*BT*DYSON OPERATIONS PTE. LTD.,
+,N1/N101,,,"Hardcode ""BT"""
+oc_rate.client_name,N1/N102,,,分组1 oc_rate后:  oc_rate.client_name
+,/N3,,N3*3 SENTOSA GATEWAY*ST. JAMES POWER STATION,
+"oc_rate.x_client_address1,oc_rate.x_client_address2",N3/N301,,,"分组1 oc_rate后: 合并oc_rate.x_client_address1,oc_rate.x_client_address2之间用空格隔开(空不参与合并), 最后截取前55个字符."
+,/N4,,N4*SINGAPORE**098544*SG,
+oc_rate.x_client_city,N4/N401,,,分组1 oc_rate后: oc_rate.x_client_city
+oc_rate.x_client_state,N4/N402,,,分组1 oc_rate后: oc_rate.x_client_state
+oc_rate.x_client_zipcode,N4/N403,,,分组1 oc_rate后: oc_rate.x_client_zipcode
+oc_rate.x_client_country,N4/N404,,,分组1 oc_rate后: oc_rate.x_client_country
+,/N1,,N1*SF*Flex Manufacturing (Zhuhai) Co. Ltd.*93*50030727~,
+,N1/N101,,,"Hardcode ""SF"""
+ocean.shipper_name,N1/N102,,,ocean.shipper_name
+,/N3,,N3*203 ROUTE DE GRENOBLE*CS 80097~,
+"ocean.shipper_address_1,ocean.shipper_address_2, ocean.shipper_address_3, ocean.shipper_address_4",N3/N301,,,"合并ocean.shipper_address_1,ocean.shipper_address_2, ocean.shipper_address_3, ocean.shipper_address_4 之间用空格隔开(空不参与合并), 最后截取前55个字符."
+,/N4,,N4*ST PRIEST**69800*FR~,
+ocean.shipper_city,N4/N401,,,ocean.shipper_city
+ocean.shipper_state,N4/N402,,,ocean.shipper_state
+ocean.shipper_zipcode,N4/N403,,,ocean.shipper_zipcode
+ocean.shipper_country,N4/N404,,,ocean.shipper_country
+,/N1,,N1*ST*Dyson Operations Pte Ltd. C/O EV Cargo Logistics*93*31221000~,
+,N1/N101,,,"Hardcode ""ST"""
+ocean.consignee_name,N1/N102,,,ocean.consignee_name
+,/N3,,N3*4400 W National Ave~,
+"ocean.consignee_address_1,ocean.consignee_address_2, ocean.consignee_address_3, ocean.consignee_address_4",N3/N301,,,"合并ocean.consignee_address_1,ocean.consignee_address_2, ocean.consignee_address_3, ocean.consignee_address_4 之间用空格隔开(空不参与合并), 最后截取前55个字符."
+,/N4,,N4*MILWAUKEE*WI*53214*US~,
+ocean.consignee_city,N4/N401,,,ocean.consignee_city
+ocean.consignee_state,N4/N402,,,ocean.consignee_state
+ocean.consignee_zipcode,N4/N403,,,ocean.consignee_zipcode
+ocean.consignee_country,N4/N404,,,ocean.consignee_country
+,/N1,,"N1*PR*Joy Global Surface Mining, Inc.~",
+,N1/N101,,,"Hardcode ""PR"""
+oc_rate.client_name,N1/N102,,,分组1 oc_rate后: oc_rate.client_name
+,/N3,,N3*S Howell Ave 10001~,
+"oc_rate.x_client_address1,oc_rate.x_client_address2",N3/N301,,,"分组1 oc_rate后: 合并oc_rate.x_client_address1,oc_rate.x_client_address2之间用空格隔开(空不参与合并), 最后截取前55个字符."
+,/N4,,N4*Oak Creek*WI*53154-5632*US~,
+oc_rate.x_client_city,N4/N401,,,分组1 oc_rate后: oc_rate.x_client_city
+oc_rate.x_client_state,N4/N402,,,分组1 oc_rate后: oc_rate.x_client_state
+oc_rate.x_client_zipcode,N4/N403,,,分组1 oc_rate后: oc_rate.x_client_zipcode
+oc_rate.x_client_country,N4/N404,,,分组1 oc_rate后: oc_rate.x_client_country
+R4*R 转换占位处理,/R4,Place of Receipt,R4*R*UN*CNZUH*Zhuhai*CN~,R4*R 转换占位处理
+R4*R 转换占位处理,/R4/R401,Port or Terminal Function Code,,"Hard Code : ""R"""
+R4*R 转换占位处理,/R4/R402,Location Qualifier,,"Hard Code : ""UN"""
+R4*R 转换占位处理,/R4/R403,Location Identifier,,"From 304 - R401 = R, 304-R403"
+R4*R 转换占位处理,/R4/R404,Port Name,,"From 304 - R401 = R, 304-R404"
+R4*R 转换占位处理,/R4/R405,Country Code,,"From 304 - R401 = R, 304-R405"
+,/DTM,,DTM*139*20260428*0000*LT,
+,/DTM/DTM01,Date/Time Qualifier,,"Estimated: Hard Code: ""139"""
+,/DTM/DTM02,Date,,"ocean_reference[ref_code=""Dyson Earliest Pickup""].ref_value"
+,/DTM/DTM03,Time,,Hard code: 0000
+,R4,Port of Loading,R4*L*UN*CNYTN~,
+,/R4/R401,Port or Terminal Function Code,,"Hard Code : ""L"""
+,/R4/R402,Location Qualifier,,"Hard Code : ""UN"""
+ocean.fport_of_loading,/R4/R403,Location Identifier,,ocean.fport_of_loading
+ocean.fport_of_loading_exp,/R4/R404,Port Name,,ocean.fport_of_loading_exp
+,,,,"Example: YANTIAN, GD, CHINA > YANTIAN  (only capture the text before the first "","")"
+ocean.fport_of_loading_ctry,/R4/R405,Country Code,,ocean.fport_of_loading_ctry
+,/DTM,,,
+,/DTM/DTM01,Date/Time Qualifier,,"DTM (DTM01,DTM02, DTM03) 数据, 如果DTM02为null或者空字符, 整组不生成"
+,,,,"ocean_milestone[code=IFFDEP].est_date不为空(null或者空字符串) Hard Code: ""139"""
+ocean_milestone,/DTM/DTM02,Date,,DTM01=139此值为: ocean_milestone[code=IFFDEP].est_date (yyyy-MM-dd格式)转换为 yyyyMMdd格式
+ocean_milestone,/DTM/DTM03,Time,,"DTM02为空, 值为空. DTM02不为空, 此值为空或者null, 此值用0000"
+,,,,DTM01=139: ocean_milestone[code=IFFDEP].est_time (HH:MM格式)转换为 HHMM格式
+,R4,Port of Discharge,R4*D*UN*GBFXT~,
+,/R4/R401,Port or Terminal Function Code,,"Hard Code : ""D"""
+,/R4/R402,Location Qualifier,,"Hard Code : ""UN"""
+ocean.fport_of_discharge,/R4/R403,Location Identifier,,ocean.fport_of_discharge
+ocean.fport_of_discharge_exp,/R4/R404,Port Name,,"ocean.fport_of_discharge_exp (截取第一个逗号前的值, 没有逗号直接返回)"
+,,,,"Example: ROTTERDAM, ZH, NL > ROTTERDAM  (only capture the text before the first "","")"
+ocean.fport_of_discharge_ctry,/R4/R405,Country Code,,ocean.fport_of_discharge_ctry
+,/DTM,,,LOOP
+,/DTM/DTM01,Date/Time Qualifier,,"Hard Code: ""139"""
+ocean.m_eta,/DTM/DTM02,Date,,DTM01=139: ocean.m_eta (DDMMYYYY格式)转换为 yyyyMMdd格式
+,/DTM/DTM03,Time,,"DTM01=139: hardcode ""0000"""
+R4*E 转换占位处理,R4,Place of Delivery,R4*E*UN*GBHDC*Hardwicke*GB~,R4*E 和下面的DTM转换都保留占位
+R4*E 转换占位处理,/R4/R401,Port or Terminal Function Code,,"Hard Code : ""E"""
+R4*E 转换占位处理,/R4/R402,Location Qualifier,,"Hard Code : ""UN"""
+R4*E 转换占位处理,/R4/R403,Location Identifier,,"From 304 - R401 = E, 304-R403"
+R4*E 转换占位处理,/R4/R404,Port Name,,"From 304 - R401 = E, 304-R404"
+R4*E 转换占位处理,/R4/R405,Country Code,,"From 304 - R401 = E, 304-R405"
+R4*E 转换占位处理,/DTM,,,LOOP
+R4*E 转换占位处理,/DTM/DTM01,Date/Time Qualifier,,From 304
+R4*E 转换占位处理,/DTM/DTM02,Date,,From 304
+R4*E 转换占位处理,/DTM/DTM03,Time,,From 304
+,/LX,LX*1,,
+,/LX/LX01,LX01,,"Hard Code : ""1"""
+,/N7,,N7*OOCL*9876544********************HV40,"if ocean.loadterm 不等于 LCL, 生成N7这组节点"
+oc_container.ctnr,/N7/N701,Equipment Initial,Container Number,
+,,,,分组2 oc_container后:  oc_container.ctnr (截取前四个字符)
+,,,,Example: OOLU1234567 > OOLU (Take the first 4 character)
+oc_container.ctnr,/N7/N702,Equipment Number,,分组2 oc_container后: oc_container.ctnr (截取后8个字符)
+,,,,OOLU1234567 > 1234567 (Take the remaining characters after 4th character)
+LX/N7/N722 转换占位处理,/N7/N722,Equipment Type,,From 304-N722 (保留转换占位)
+,/L0,,L0*1***512.19*B*1.392*X*14*PKG**K~,
+,L0/L001,,,序号 (start from 1)
+oc_container.grs_kgs,L0/L004,,,"分组2 oc_container后:  sum(oc_container.grs_kgs) group by oc_container.serial_no, oc_container.ctnr"
+,L0/L005,,,"Hard Code : ""G"""
+oc_container.cbm,L0/L006,,,"分组2 oc_container后:  sum(oc_container.cbm) group by oc_container.serial_no, oc_container.ctnr"
+,L0/L007,,,"Hard Code : ""X"""
+oc_container.qty,L0/L008,,No of unit / Pieces,"分组2 oc_container后:  sum(oc_container.qty) group by oc_container.serial_no, oc_container.ctnr"
+oc_container.unit,L0/L009,,"Unit of measure - BOX, CTN, PCS, PKG","分组2 oc_container后:  max(oc_container.unit) group by oc_container.serial_no, oc_container.ctnr"
+,,,,"max(oc_container.unit) 为null或者不是CTN, PKG就用PCS"
+,L0/L011,,,"Hard Code : ""K"""
+,/L1,,L1*1***31850****CCE****Additional Commercial Inv~,
+,L1/L101,,,序号 (start from 1)
+oc_rate.unit_price,L1/L102,,,oc_rate.unit_price
+,L1/L103,,,Hard Code:KG
+"oc_rate.amount,oc_rate.vat_amount",L1/L104,,,oc_rate.amount + oc_rate.vat_amount
+oc_rate.customer_code,L1/L108,,,oc_rate.customer_code
+,L1/L112,,,Hard code: Freight
+,/L3,,L3*468.75 *B***1044****468.75*X*50*K~,
+oc_container.grs_kgs,L3/L301,,,sum(oc_container.grs_kgs) group by oc_container.serial_no
+,L3/L302,,,"Hard Code : ""G"""
+,L3/L305,Total amount,,"分组1 oc_rate后:  sum(oc_rate.amount + oc_rate.vat_amount) group by oc_rate.invoice_no, oc_rate.client_id"
+oc_container.cbm,L3/L309,Total Volume,,分组3 oc_container2后:  sum(oc_container.cbm) group by oc_container.serial_no
+,L3/L310,CBM,,"Hard Code : ""X"""
+oc_container.qty,L3/L311,Total No of unit / Pieces,,"分组1 oc_rate后: sum(oc_container.qty) group by oc_rate.client_id, oc_rate.invoice_no"
+,L3/L312,K Kilograms,,"Hard Code : ""K"""
+,/SE,,SE*25*2110~,
+,SE/SE01,,,Total number of segments included in a transaction set including ST and SE segments
+,SE/SE02,,,1
+,/GE,,GE*1*2110~,
+,GE/GE01,,,1
+,GE/GE02,,,同GS/GS06  Control Number(9位)
+,/IEA,,IEA*1*002199459~,
+,IEA/IEA01,,,1
+,IEA/IEA02,,,同ISA/ISA12 Control Number(9位)
+,/IEA,,IEA*1*002199459~,
+,IEA/IEA01,,,1
+,IEA/IEA02,,,同ISA/ISA12 Control Number(9位)
